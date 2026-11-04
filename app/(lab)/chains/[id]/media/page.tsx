@@ -6,13 +6,7 @@ import { RUN_COLUMNS, timeAgo, type Run } from "@/lib/chain-lab";
 import ui from "../../../ui.module.css";
 import styles from "../../../media.module.css";
 
-export const metadata: Metadata = { title: "Generated media" };
-
-const STATUS = {
-  succeeded: { label: "Done", tone: "good" },
-  failed: { label: "Failed", tone: "danger" },
-  running: { label: "Running", tone: "warn" },
-} as const;
+export const metadata: Metadata = { title: "Media" };
 
 /** Everything this chain has generated, newest first. */
 export default async function MediaPage(props: PageProps<"/chains/[id]/media">) {
@@ -38,9 +32,8 @@ export default async function MediaPage(props: PageProps<"/chains/[id]/media">) 
     return (
       <div className={ui.empty}>
         <strong>Nothing generated yet.</strong>
-        <p>Run the chain on an image and the captions it writes show up here.</p>
         <Link href={`/chains/${id}`} className="btn btn-primary">
-          Go run it
+          Run the chain
         </Link>
       </div>
     );
@@ -48,41 +41,34 @@ export default async function MediaPage(props: PageProps<"/chains/[id]/media">) 
 
   return (
     <ul className={styles.grid}>
-      {runs.map((run) => {
-        const status = STATUS[run.status];
-        return (
-          <li key={run.id}>
-            <Link href={`/runs/${run.id}`} className={`${ui.card} ${styles.item}`}>
-              <span className={styles.photo}>
-                {run.image_url ? (
-                  <Image src={run.image_url} alt="" fill sizes="(max-width: 640px) 100vw, 300px" />
-                ) : (
-                  <span className={styles.noPhoto}>Text only</span>
-                )}
-                {run.captions[0] && <span className={styles.overlay}>{run.captions[0]}</span>}
-              </span>
-              <span className={styles.body}>
-                {run.captions.length > 1 ? (
-                  <ol className={styles.more} start={2}>
-                    {run.captions.slice(1, 4).map((c, i) => (
-                      <li key={i}>{c}</li>
-                    ))}
-                  </ol>
-                ) : run.captions.length === 0 ? (
-                  <span className={styles.text}>{run.final_output ?? run.error ?? "No output."}</span>
-                ) : null}
-                <span className={styles.meta}>
-                  <span className={ui.badge} data-tone={status.tone}>
-                    {status.label}
-                  </span>
-                  {run.captions.length > 0 && <span>{run.captions.length} captions</span>}
-                  <span>{timeAgo(run.created_at)}</span>
+      {runs.map((run) => (
+        <li key={run.id}>
+          <Link href={`/runs/${run.id}`} className={`${ui.card} ${styles.item}`}>
+            <span className={styles.photo}>
+              {run.image_url ? (
+                <Image src={run.image_url} alt="" fill sizes="(max-width: 640px) 100vw, 260px" />
+              ) : (
+                <span className={styles.noPhoto}>No image</span>
+              )}
+              {run.captions[0] && <span className={styles.overlay}>{run.captions[0]}</span>}
+            </span>
+            <span className={styles.meta}>
+              {run.status === "failed" ? (
+                <span className={ui.badge} data-tone="danger">
+                  Failed
                 </span>
-              </span>
-            </Link>
-          </li>
-        );
-      })}
+              ) : run.status === "running" ? (
+                <span className={ui.badge} data-tone="warn">
+                  Unfinished
+                </span>
+              ) : (
+                <span>{run.captions.length > 0 ? `${run.captions.length} captions` : "Text output"}</span>
+              )}
+              <span>{timeAgo(run.created_at)}</span>
+            </span>
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }

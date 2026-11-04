@@ -25,18 +25,10 @@ export default async function ChainPage(props: PageProps<"/chains/[id]">) {
 
   return (
     <div className={styles.editor}>
-      <section aria-labelledby="steps-title" className={styles.stepsCol}>
-        <div className={styles.stepsHead}>
-          <h2 id="steps-title" className={ui.sectionTitle}>
-            Steps
-          </h2>
-          <p className={styles.stepsHint}>Runs top to bottom. Each step&apos;s output is passed to the next.</p>
-        </div>
-
+      <section aria-label="Steps">
         {list.length === 0 ? (
           <div className={ui.empty}>
             <strong>No steps yet.</strong>
-            <p>Add the first step below. It usually looks at the image and describes it.</p>
           </div>
         ) : (
           <ol className={styles.steps}>
@@ -47,9 +39,7 @@ export default async function ChainPage(props: PageProps<"/chains/[id]">) {
                   <StepCard step={step} total={list.length} models={models} />
                   {next && (
                     <p className={styles.wire} data-unused={next.input === "image" || undefined}>
-                      {next.input === "image"
-                        ? `Step ${next.position} looks only at the image`
-                        : `Output → step ${next.position}`}
+                      {next.input === "image" ? "not used by the next step" : null}
                     </p>
                   )}
                 </li>
@@ -57,7 +47,6 @@ export default async function ChainPage(props: PageProps<"/chains/[id]">) {
             })}
           </ol>
         )}
-
         <AddStep chainId={id} total={list.length} models={models} />
       </section>
 

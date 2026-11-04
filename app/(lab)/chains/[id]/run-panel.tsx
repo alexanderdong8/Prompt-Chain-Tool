@@ -35,7 +35,6 @@ type Props = {
 export function RunPanel({ chainId, userId, steps, needsImage, images: initialImages }: Props) {
   const [images, setImages] = useState(initialImages);
   const [imageId, setImageId] = useState<string | null>(initialImages[0]?.id ?? null);
-  const [startingText, setStartingText] = useState("");
   const [running, setRunning] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState<Progress[] | null>(null);
@@ -70,7 +69,7 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
     setError(null);
     setCaptions(null);
     setRunning(true);
-    const started = await startRun(chainId, imageId, startingText);
+    const started = await startRun(chainId, needsImage ? imageId : null, "");
     if (!started.ok) {
       setRunning(false);
       return setError(started.message);
@@ -91,7 +90,6 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
       if (!r.ok) {
         list = list.map((p) => (p.position === s.position ? { ...p, status: "failed", error: r.message, result: r.step } : p));
         setProgress(list);
-        setError(`Step ${s.position} failed: ${r.message}`);
         break;
       }
       list = list.map((p) => (p.position === s.position ? { ...p, status: "succeeded", result: r.step } : p));
@@ -106,70 +104,48 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
 
   return (
     <section className={`${ui.card} ${styles.run}`} aria-labelledby="run-title">
-      <div>
-        <h2 id="run-title" className={ui.sectionTitle}>
-          Run this chain
-        </h2>
-        <p className={styles.runLede}>
-          Generates media: the steps run in order on the image you pick, and the last step&apos;s captions are saved to
-          this chain&apos;s media.
-        </p>
-      </div>
+      <h2 id="run-title" className={ui.sectionTitle}>
+        Run
+      </h2>
 
-      <fieldset className={styles.picker} disabled={running}>
-        <legend>
-          Image {needsImage ? "" : <span className={styles.optional}>(no step uses it)</span>}
-        </legend>
-        <div className={styles.pickGrid}>
-          <button
-            type="button"
-            className={styles.uploadTile}
-            onClick={() => fileInput.current?.click()}
-            disabled={uploading}
-          >
-            {uploading ? "Uploading…" : "+ Upload"}
-          </button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            hidden
-            onChange={(e) => {
-              upload(e.target.files?.[0]);
-              e.target.value = "";
-            }}
-          />
-          {images.map((img) => (
-            <label key={img.id} className={styles.pick} title={img.description ?? undefined}>
-              <input
-                type="radio"
-                name="image"
-                value={img.id}
-                checked={imageId === img.id}
-                onChange={() => setImageId(img.id)}
-                className="visually-hidden"
-              />
-              <Image src={img.public_url} alt={img.description ?? "Library image"} fill sizes="80px" />
-            </label>
-          ))}
-        </div>
-        {images.length === 0 && <p className={styles.addHint}>No images in the library yet. Upload one.</p>}
-      </fieldset>
-
-      <details className={styles.starting}>
-        <summary>Starting text (optional)</summary>
-        <label className="field">
-          <span className="visually-hidden">Starting text</span>
-          <textarea
-            value={startingText}
-            onChange={(e) => setStartingText(e.target.value)}
-            maxLength={2000}
-            rows={3}
-            disabled={running}
-            placeholder="Passed to step 1 when it takes the previous step, and available anywhere as {{input}}."
-          />
-        </label>
-      </details>
+      {needsImage && (
+        <fieldset className={styles.picker} disabled={running}>
+          <legend className="visually-hidden">Image</legend>
+          <div className={styles.pickGrid}>
+            <button
+              type="button"
+              className={styles.uploadTile}
+              onClick={() => fileInput.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? "…" : "+ Upload"}
+            </button>
+            <input
+              ref={fileInput}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+              onChange={(e) => {
+                upload(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+            {images.map((img) => (
+              <label key={img.id} className={styles.pick} title={img.description ?? undefined}>
+                <input
+                  type="radio"
+                  name="image"
+                  value={img.id}
+                  checked={imageId === img.id}
+                  onChange={() => setImageId(img.id)}
+                  className="visually-hidden"
+                />
+                <Image src={img.public_url} alt={img.description ?? "Library image"} fill sizes="80px" />
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
 
       <button
         type="button"
@@ -177,7 +153,7 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
         onClick={run}
         disabled={running || uploading || steps.length === 0 || (needsImage && !image)}
       >
-        {running ? "Running…" : steps.length === 0 ? "Add a step to run" : `▶ Run ${steps.length} ${steps.length === 1 ? "step" : "steps"}`}
+        {running ? "Running…" : "▶ Run chain"}
       </button>
 
       {progress && (
@@ -188,18 +164,7 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
                 {p.status === "succeeded" ? "✓" : p.status === "failed" ? "!" : p.position}
               </span>
               <div className={styles.progressBody}>
-                <p className={styles.progressName}>
-                  {p.name}
-                  <span className={styles.progressState}>
-                    {p.status === "running"
-                      ? "running…"
-                      : p.status === "succeeded"
-                        ? `${p.result?.model ?? ""}${p.result?.latency_ms ? ` · ${(p.result.latency_ms / 1000).toFixed(1)}s` : ""}`
-                        : p.status === "failed"
-                          ? "failed"
-                          : "waiting"}
-                  </span>
-                </p>
+                <p className={styles.progressName}>{p.name}</p>
                 {p.status === "succeeded" && p.result?.result && p.result.output === "text" && (
                   <p className={styles.progressOut}>{p.result.result}</p>
                 )}
@@ -217,34 +182,19 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
       )}
 
       {captions && captions.length > 0 && (
-        <div className={styles.result}>
-          {image && (
-            <div className={styles.resultImage}>
-              <Image src={image.public_url} alt="" fill sizes="340px" />
-            </div>
-          )}
-          <ol className={styles.captions}>
-            {captions.map((c, i) => (
-              <li key={i}>{c}</li>
-            ))}
-          </ol>
-        </div>
+        <ol className={styles.captions}>
+          {captions.map((c, i) => (
+            <li key={i}>{c}</li>
+          ))}
+        </ol>
       )}
       {finished && last?.status === "succeeded" && !captions?.length && last.result?.result && (
-        <div className={styles.finalText}>
-          <p className={ui.kicker}>Final output</p>
-          <p>{last.result.result}</p>
-        </div>
+        <p className={styles.finalText}>{last.result.result}</p>
       )}
       {finished && runId && (
-        <div className={ui.actions}>
-          <Link href={`/runs/${runId}`} className="btn btn-sm">
-            Open this run
-          </Link>
-          <Link href={`/chains/${chainId}/media`} className="btn btn-ghost btn-sm">
-            All media →
-          </Link>
-        </div>
+        <Link href={`/runs/${runId}`} className={styles.runLink}>
+          View run details →
+        </Link>
       )}
     </section>
   );

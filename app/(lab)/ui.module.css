@@ -9,19 +9,10 @@
   margin-bottom: 1.5rem;
 }
 
-.kicker {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--wire);
-}
-
 .title {
   margin-top: 0.25rem;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -124,12 +115,6 @@
   font-size: 0.9rem;
 }
 
-.success {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--good);
-}
-
 .fieldError {
   color: var(--danger) !important;
   font-weight: 600;
@@ -211,7 +196,3 @@
   font-size: 0.92rem;
 }
 
-.mono {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-}

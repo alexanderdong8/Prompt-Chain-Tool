@@ -24,13 +24,13 @@ export function ChainHeader({ chain }: Props) {
     return (
       <form action={action} className={`${ui.card} ${styles.editHead}`} noValidate>
         <label className="field">
-          <span>Chain name</span>
+          <span>Name</span>
           <input name="name" defaultValue={chain.name} maxLength={80} required autoFocus aria-invalid={Boolean(errors.name)} />
           {errors.name && <small className={ui.fieldError}>{errors.name}</small>}
         </label>
         <label className="field">
           <span>Description</span>
-          <textarea name="description" defaultValue={chain.description} maxLength={500} rows={3} className={styles.plain} />
+          <input name="description" defaultValue={chain.description} maxLength={500} />
           {errors.description && <small className={ui.fieldError}>{errors.description}</small>}
         </label>
         <div className={ui.actions}>
@@ -53,33 +53,12 @@ export function ChainHeader({ chain }: Props) {
   return (
     <header className={styles.head}>
       <div className={styles.headText}>
-        <p className={ui.kicker}>Prompt chain</p>
         <h1 className={ui.title}>{chain.name}</h1>
         {chain.description ? <p className={ui.lede}>{chain.description}</p> : null}
       </div>
-      <div className={styles.headActions}>
-        {!confirming && (
-          <>
-            <button type="button" className="btn btn-sm" onClick={() => setEditing(true)}>
-              Rename / describe
-            </button>
-            <button type="button" className="btn btn-danger btn-sm" onClick={() => setConfirming(true)}>
-              Delete chain
-            </button>
-          </>
-        )}
-        {state.ok && state.message && !confirming && (
-          <span className={ui.success} role="status">
-            {state.message}
-          </span>
-        )}
-      </div>
-      {confirming && (
-        <div className={`${ui.confirm} ${styles.headConfirm}`} role="alertdialog" aria-label="Delete this chain?">
-          <p>
-            <strong>Delete “{chain.name}”?</strong> Its steps and all the media it generated are deleted too. This
-            can&apos;t be undone.
-          </p>
+      {confirming ? (
+        <div className={ui.confirm} role="alertdialog" aria-label="Delete this chain?">
+          <p>Delete this chain, its steps, and its media?</p>
           <div className={ui.actions}>
             <button
               type="button"
@@ -92,13 +71,22 @@ export function ChainHeader({ chain }: Props) {
                 })
               }
             >
-              {deleting ? "Deleting…" : "Yes, delete it"}
+              {deleting ? "Deleting…" : "Delete"}
             </button>
             <button type="button" className="btn btn-sm" onClick={() => setConfirming(false)} disabled={deleting}>
-              Keep it
+              Cancel
             </button>
           </div>
           {deleteError && <p className={ui.error}>{deleteError}</p>}
+        </div>
+      ) : (
+        <div className={ui.actions}>
+          <button type="button" className="btn btn-sm" onClick={() => setEditing(true)}>
+            Edit
+          </button>
+          <button type="button" className="btn btn-danger btn-sm" onClick={() => setConfirming(true)}>
+            Delete
+          </button>
         </div>
       )}
     </header>

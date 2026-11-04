@@ -12,13 +12,13 @@ export function DeleteRun({ runId }: { runId: string }) {
   if (!confirming) {
     return (
       <button type="button" className="btn btn-danger btn-sm" onClick={() => setConfirming(true)}>
-        Delete run
+        Delete
       </button>
     );
   }
   return (
     <div className={ui.actions}>
-      <span>Delete this run and its captions?</span>
+      <span>Delete this run?</span>
       <button
         type="button"
         className="btn btn-danger btn-sm"
@@ -30,7 +30,7 @@ export function DeleteRun({ runId }: { runId: string }) {
           })
         }
       >
-        {pending ? "Deleting…" : "Yes, delete"}
+        {pending ? "Deleting…" : "Delete"}
       </button>
       <button type="button" className="btn btn-sm" onClick={() => setConfirming(false)} disabled={pending}>
         Cancel

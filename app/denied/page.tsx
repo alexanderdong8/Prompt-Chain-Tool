@@ -22,12 +22,11 @@ export default async function DeniedPage() {
         </p>
         <h1 className={styles.title}>Superadmins only.</h1>
         <p className={styles.lede}>
-          You&apos;re signed in as <strong>{user.email}</strong>, but that account isn&apos;t a superadmin
-          (profiles.is_superadmin). An existing superadmin can promote you in Punchline Backstage.
+          <strong>{user.email}</strong> isn&apos;t a superadmin.
         </p>
         <form action="/auth/signout" method="post">
           <button type="submit" className="btn btn-primary">
-            Sign out and switch accounts
+            Switch accounts
           </button>
         </form>
       </section>

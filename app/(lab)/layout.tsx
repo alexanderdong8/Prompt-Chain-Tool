@@ -20,9 +20,7 @@ export default async function LabLayout({ children }: LayoutProps<"/">) {
         <div className={styles.bar}>
           <Link href="/" className={styles.brand}>
             <Logo />
-            <span>
-              Chain Lab <small>for Punchline</small>
-            </span>
+            <span>Chain Lab</span>
           </Link>
           <div className={styles.right}>
             <ThemeSwitch initial={theme} />

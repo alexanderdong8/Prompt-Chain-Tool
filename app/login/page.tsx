@@ -21,11 +21,8 @@ export default async function LoginPage(props: PageProps<"/login">) {
         <p className={styles.brand}>
           <Logo /> Chain Lab
         </p>
-        <h1 className={styles.title}>Build the prompt chains behind the punchlines.</h1>
-        <p className={styles.lede}>
-          Create multi-step prompt chains, reorder their steps, and run them on photos to generate captions.
-          Superadmins only: sign in with the Google account you use on Punchline.
-        </p>
+        <h1 className={styles.title}>Prompt chains for Punchline.</h1>
+        <p className={styles.lede}>Superadmins only.</p>
         <div className={styles.chain} aria-hidden="true">
           <span>1</span>
           <i />

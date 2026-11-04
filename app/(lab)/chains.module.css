@@ -1,27 +1,19 @@
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  align-items: start;
-  gap: 1.5rem;
-}
-
 .list {
   list-style: none;
   display: grid;
-  gap: 0.9rem;
+  gap: 0.75rem;
   padding: 0;
 }
 
 .chain {
   display: grid;
-  gap: 0.7rem;
-  padding: 1.1rem 1.2rem;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  transition: border-color 0.15s ease;
 }
 
 .chain:hover {
   border-color: var(--line-strong);
-  transform: translateY(-1px);
 }
 
 .chainHead {
@@ -34,7 +26,7 @@
 
 .chainName {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   overflow-wrap: anywhere;
 }
@@ -45,8 +37,11 @@
 }
 
 .chainDesc {
+  overflow: hidden;
+  font-size: 0.9rem;
   color: var(--muted);
-  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* The steps as a row of linked chips. */
@@ -64,25 +59,25 @@
   align-items: center;
   gap: 0.4rem;
   max-width: 100%;
-  padding: 0.25rem 0.6rem 0.25rem 0.3rem;
+  padding: 0.2rem 0.6rem 0.2rem 0.25rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface-2);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .flow li + li {
-  margin-left: 22px;
   position: relative;
+  margin-left: 18px;
 }
 
 .flow li + li::before {
   content: "";
   position: absolute;
-  left: -23px;
+  left: -19px;
   top: 50%;
-  width: 22px;
+  width: 18px;
   height: 2px;
   background: var(--wire);
 }
@@ -95,13 +90,13 @@
 .flowNum {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
   background: var(--ink);
   color: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
 }
 
 .flowName {
@@ -110,20 +105,15 @@
   white-space: nowrap;
 }
 
-.noSteps {
-  font-size: 0.85rem;
-  color: var(--faint);
-}
-
 .thumbs {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .thumb {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
   border-radius: 8px;
   border: 1px solid var(--line);
@@ -133,78 +123,24 @@
   object-fit: cover;
 }
 
-.create {
-  position: sticky;
-  top: 80px;
-  display: grid;
-  gap: 1rem;
-  padding: 1.2rem;
-}
-
 .form {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.8rem;
+  width: min(100%, 380px);
+  padding: 1rem;
 }
 
-.plain {
-  min-height: 80px !important;
-  font-family: var(--font-body) !important;
-}
-
-.start {
-  display: grid;
-  gap: 0.5rem;
-  padding: 0;
-  border: 0;
-}
-
-.start legend {
-  margin-bottom: 0.35rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.start label {
+.check {
   display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.start label:has(input:checked) {
-  border-color: var(--wire);
-  background: var(--wire-soft);
-}
-
-.start input {
-  margin-top: 0.25rem;
+.check input {
+  width: 16px;
+  height: 16px;
   accent-color: var(--wire);
-}
-
-.start span {
-  display: grid;
-}
-
-.start strong {
-  font-size: 0.92rem;
-}
-
-.start small {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .create {
-    position: static;
-
-  }
 }

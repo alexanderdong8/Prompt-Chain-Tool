@@ -45,14 +45,6 @@
   white-space: nowrap;
 }
 
-.brand small {
-  margin-left: 0.3rem;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--faint);
-}
-
 .right {
   display: flex;
   align-items: center;
@@ -91,7 +83,6 @@
 }
 
 @media (max-width: 720px) {
-  .brand small,
   .whoName {
     display: none;
   }

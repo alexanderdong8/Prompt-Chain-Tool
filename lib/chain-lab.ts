@@ -3,17 +3,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 export type StepInput = "image" | "previous" | "both";
 export type StepOutput = "text" | "captions";
 
-export const INPUTS: Record<StepInput, { label: string; hint: string }> = {
-  image: { label: "The image", hint: "Sees the run's image. Ignores earlier steps unless the prompt uses {{step N}}." },
-  previous: { label: "Previous step", hint: "Gets the previous step's output (step 1 gets the starting text)." },
-  both: { label: "Image + previous step", hint: "Sees the image and gets the previous step's output." },
-};
-
-export const OUTPUTS: Record<StepOutput, { label: string; hint: string }> = {
-  text: { label: "Text", hint: "Free text, passed to the next step." },
-  captions: { label: "Captions", hint: "A list of short captions. On the last step, these become the run's media." },
-};
-
 export const MAX_STEPS = 12;
 
 export type Chain = {
