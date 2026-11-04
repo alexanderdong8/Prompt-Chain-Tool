@@ -80,9 +80,19 @@ export type StepResult = {
   latencyMs: number;
 };
 
+/** How long one step may spend on model calls in total (the server action gets 120s). */
+const STEP_BUDGET_MS = 90_000;
+/** How long to wait on one model before trying the next one. */
+const ATTEMPT_MS = 25_000;
+
+function isTimeout(error: unknown) {
+  return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+}
+
 /**
  * One step = one model call. Tries each model in order, moving on when one is
- * rate limited or overloaded.
+ * rate limited, overloaded, or too slow (a busy model can take 30s+ or fail
+ * after 20s), so a step can't outlive the request.
  */
 export async function runModelStep({
   models,
@@ -111,14 +121,20 @@ export async function runModelStep({
     },
   ];
 
+  const deadline = Date.now() + STEP_BUDGET_MS;
   let lastError: unknown;
-  for (const { api_model_id: model, temperature } of models) {
+  for (const [i, { api_model_id: model, temperature }] of models.entries()) {
     const started = Date.now();
+    const remaining = deadline - started;
+    if (remaining < 3_000) break;
+    // The last model gets whatever time is left; earlier ones get a fair slice.
+    const timeout = i === models.length - 1 ? remaining : Math.min(ATTEMPT_MS, remaining);
     try {
       const response = await ai.models.generateContent({
         model,
         contents: [{ role: "user", parts }],
         config: {
+          abortSignal: AbortSignal.timeout(timeout),
           temperature,
           ...(output === "captions"
             ? { responseMimeType: "application/json", responseJsonSchema: captionSchema(captionCount) }
@@ -152,6 +168,7 @@ export async function runModelStep({
     } catch (error) {
       if (error instanceof StepError) throw error;
       lastError = error;
+      if (isTimeout(error)) continue;
       if (error instanceof ApiError && (error.status === 429 || error.status >= 500)) continue;
       break;
     }
@@ -160,6 +177,9 @@ export async function runModelStep({
   console.error("[run-step] all models failed", lastError);
   if (lastError instanceof ApiError && lastError.status === 429) {
     throw new StepError(String(lastError), "Gemini is rate limiting us. Wait a minute and run again.");
+  }
+  if (isTimeout(lastError) || (lastError instanceof ApiError && lastError.status >= 500)) {
+    throw new StepError(String(lastError), "The models are busy right now. Try again in a minute.");
   }
   if (lastError instanceof ApiError && lastError.status === 404) {
     throw new StepError(String(lastError), "That model doesn't exist on the API. Pick another model for this step.");

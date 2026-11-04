@@ -91,6 +91,29 @@ export async function startRun(chainId: string, imageId: string | null, starting
   return { ok: true, runId: run.id, steps: steps.map((s) => ({ position: s.position, name: s.name })) };
 }
 
+/**
+ * When a step's request dies (the connection dropped or the server cut it
+ * off), marks the step and run failed so they don't stay "running" forever.
+ */
+export async function abandonRun(runId: string, position: number) {
+  const admin = await adminOrNull();
+  if (!admin || !UUID.test(runId) || !Number.isInteger(position)) return;
+  const now = new Date().toISOString();
+  await admin.supabase
+    .from("chain_lab_run_steps")
+    .update({ status: "failed", error: "The request was cut off before the model answered.", completed_at: now })
+    .eq("run_id", runId)
+    .eq("position", position)
+    .in("status", ["pending", "running"]);
+  const { data } = await admin.supabase
+    .from("chain_lab_runs")
+    .update({ status: "failed", error: `Step ${position}: the request was cut off.`, completed_at: now })
+    .eq("id", runId)
+    .eq("status", "running")
+    .select("chain_id");
+  if (data?.[0]) revalidatePath(`/chains/${data[0].chain_id}`, "layout");
+}
+
 /** Runs one step of a run: fills its prompt with earlier outputs, calls the model, saves the result. */
 export async function runStep(runId: string, position: number): Promise<StepRunResult> {
   const admin = await adminOrNull();

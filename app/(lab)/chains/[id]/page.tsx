@@ -10,8 +10,8 @@ import styles from "./chain.module.css";
 
 export const metadata: Metadata = { title: "Edit chain" };
 
-// Server actions on this page (each runs one model call) get up to a minute.
-export const maxDuration = 60;
+// Server actions on this page each run one step (one model call, with fallbacks): up to two minutes.
+export const maxDuration = 120;
 
 export default async function ChainPage(props: PageProps<"/chains/[id]">) {
   const [{ id }, { supabase, user }] = await Promise.all([props.params, requireAdmin()]);

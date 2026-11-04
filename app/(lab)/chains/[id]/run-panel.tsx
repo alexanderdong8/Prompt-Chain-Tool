@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { LibraryImage, RunStep } from "@/lib/chain-lab";
-import { registerUpload, runStep, startRun } from "../../run-actions";
+import { abandonRun, registerUpload, runStep, startRun } from "../../run-actions";
 import ui from "../../ui.module.css";
 import styles from "./chain.module.css";
 
@@ -85,7 +85,8 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
       try {
         r = await runStep(started.runId, s.position);
       } catch {
-        r = { ok: false, message: "Lost the connection to the server. The run may be incomplete." };
+        await abandonRun(started.runId, s.position).catch(() => {});
+        r = { ok: false, message: "The request was cut off. Try running again." };
       }
       if (!r.ok) {
         list = list.map((p) => (p.position === s.position ? { ...p, status: "failed", error: r.message, result: r.step } : p));
@@ -130,17 +131,18 @@ export function RunPanel({ chainId, userId, steps, needsImage, images: initialIm
                 e.target.value = "";
               }}
             />
-            {images.map((img) => (
+            {images.map((img, i) => (
               <label key={img.id} className={styles.pick} title={img.description ?? undefined}>
                 <input
                   type="radio"
+                  aria-label={img.description ?? `Image ${i + 1}`}
                   name="image"
                   value={img.id}
                   checked={imageId === img.id}
                   onChange={() => setImageId(img.id)}
                   className="visually-hidden"
                 />
-                <Image src={img.public_url} alt={img.description ?? "Library image"} fill sizes="80px" />
+                <Image src={img.public_url} alt="" fill sizes="80px" />
               </label>
             ))}
           </div>
