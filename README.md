@@ -10,15 +10,15 @@ It's the third app in the Punchline project, next to the public app ([humor-proj
 
 ## What it does
 
-- **Chains** (`/`): every chain, its steps shown as a linked row, run counts, and the latest media. Create a chain, empty or from the 3-step example.
+- **Chains** (`/`): every chain with its steps, run count, and latest media. **New chain** creates one, empty or from the 3-step example.
 - **Edit a chain** (`/chains/[id]`): rename it or edit its description, or delete it (its steps and media go with it).
-- **Steps**: add a step (at the end or before any step), edit it, delete it (later steps move up), and reorder it: ↑ / ↓, or "Move to" any position. Each step has:
-  - a name and a prompt, with `{{previous}}`, `{{step N}}`, and `{{input}}` placeholders;
+- **Steps**: add a step (at the end or before any step), edit it, delete it (later steps move up), and reorder it with ↑ / ↓. Each step has:
+  - a name and a prompt (`{{previous}}` inserts the previous step's output; `{{step N}}` inserts step N's);
   - what it **takes in**: the image, the previous step's output, or both;
   - what it **puts out**: text, or a list of 1–10 captions;
   - a **model**: automatic (the active models from Backstage, in priority order, falling through when one is busy) or a specific one.
-- **Run** (side panel): pick an image from the library or upload one, add optional starting text, and run. Steps run one request at a time, so you see each step finish with its model and timing.
-- **Generated media** (`/chains/[id]/media`): every run of the chain, with its image and captions. Open a run (`/runs/[id]`) to see the exact prompt each step sent, the model, the output, and the time it took.
+- **Run** (side panel): pick an image from the library or upload one, and run. Steps run one request at a time, so you see each step finish. Each model gets 12s before the next one is tried, so an overloaded model can't stall a run.
+- **Media** (`/chains/[id]/media`): every run of the chain, with its image and captions. Open a run (`/runs/[id]`) to see the exact prompt each step sent, the model, the output, and the time it took.
 - **Light / dark / system** theme switch in the header, saved in a cookie so the first paint is already right.
 
 ## Access
