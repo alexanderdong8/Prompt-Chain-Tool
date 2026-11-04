@@ -1,0 +1,289 @@
+/* Chain Lab: a workbench for Punchline's prompt chains. Graph paper, ink, the
+   Punchline sun yellow as the action color, and a blue "wire" that links steps. */
+
+:root {
+  color-scheme: light;
+  --bg: #f5f3ee;
+  --grid-dot: rgba(40, 52, 80, 0.09);
+  --surface: #ffffff;
+  --surface-2: #f9f8f4;
+  --line: #e3e0d7;
+  --line-strong: #cdc8bb;
+  --ink: #1b1d22;
+  --muted: #5c5f68;
+  --faint: #8a8d95;
+
+  --sun: #ffd23f;
+  --sun-strong: #f2bf12;
+  --sun-soft: #fff4c7;
+  --sun-ink: #1b1d22;
+
+  --wire: #3866d8;
+  --wire-soft: #e4ebfc;
+
+  --good: #0f7a4c;
+  --good-soft: #dcf2e7;
+  --warn: #8a5a00;
+  --warn-soft: #fdefd0;
+  --danger: #b5321a;
+  --danger-soft: #fbe2dc;
+
+  --font-display: var(--font-bricolage), "Segoe UI", sans-serif;
+  --font-body: var(--font-plex), "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow-sm: 0 1px 2px rgba(20, 24, 33, 0.08);
+  --shadow: 0 1px 0 rgba(20, 24, 33, 0.04), 0 10px 28px -18px rgba(20, 24, 33, 0.35);
+  --page: 1200px;
+  --gutter: clamp(16px, 3.5vw, 40px);
+}
+
+/* Dark: when the device prefers it (unless light was chosen), or when chosen. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #111318;
+    --grid-dot: rgba(160, 180, 230, 0.07);
+    --surface: #1a1d24;
+    --surface-2: #15181e;
+    --line: #2a2e38;
+    --line-strong: #3a3f4c;
+    --ink: #eceef2;
+    --muted: #a8acb7;
+    --faint: #7b808c;
+    --sun-soft: #3a3115;
+    --wire: #7b9cf0;
+    --wire-soft: #1f2a45;
+    --good: #4cc995;
+    --good-soft: #15302a;
+    --warn: #f0b54a;
+    --warn-soft: #362a12;
+    --danger: #f08a73;
+    --danger-soft: #3a1d17;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 30px -18px rgba(0, 0, 0, 0.8);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111318;
+  --grid-dot: rgba(160, 180, 230, 0.07);
+  --surface: #1a1d24;
+  --surface-2: #15181e;
+  --line: #2a2e38;
+  --line-strong: #3a3f4c;
+  --ink: #eceef2;
+  --muted: #a8acb7;
+  --faint: #7b808c;
+  --sun-soft: #3a3115;
+  --wire: #7b9cf0;
+  --wire-soft: #1f2a45;
+  --good: #4cc995;
+  --good-soft: #15302a;
+  --warn: #f0b54a;
+  --warn-soft: #362a12;
+  --danger: #f08a73;
+  --danger-soft: #3a1d17;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 30px -18px rgba(0, 0, 0, 0.8);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--wire);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--sun);
+  color: #1b1d22;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  border-color: var(--sun-strong);
+  background: var(--sun);
+  color: var(--sun-ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  border-color: var(--sun-ink);
+  background: var(--sun-strong);
+}
+
+.btn-danger {
+  border-color: transparent;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  border-color: var(--danger);
+}
+
+.btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.btn-sm {
+  min-height: 32px;
+  padding: 0 0.7rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.btn-icon {
+  width: 32px;
+  min-height: 32px;
+  padding: 0;
+}
+
+/* Form fields */
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.field > span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field small {
+  font-size: 0.8rem;
+  color: var(--faint);
+}
+
+.input,
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--surface);
+}
+
+.field textarea {
+  min-height: 120px;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--wire);
+  outline: 2px solid var(--wire-soft);
+  outline-offset: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

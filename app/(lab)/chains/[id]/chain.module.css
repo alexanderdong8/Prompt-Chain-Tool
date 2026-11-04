@@ -1,0 +1,497 @@
+/* Chain header */
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.headText {
+  min-width: 0;
+  flex: 1 1 420px;
+}
+
+.headActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headConfirm {
+  flex: 1 1 100%;
+}
+
+.editHead {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
+  padding: 1.2rem;
+}
+
+.plain {
+  min-height: 70px !important;
+  font-family: var(--font-body) !important;
+}
+
+/* Layout: steps on the left, the run panel on the right. */
+
+.editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: start;
+  gap: 1.75rem;
+}
+
+.stepsHead {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.stepsHint {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.25rem;
+}
+
+/* The wire between two steps. */
+.wire {
+  position: relative;
+  margin: 0 0 0 29px;
+  padding: 0.55rem 0 0.55rem 1.1rem;
+  border-left: 2px solid var(--wire);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--wire);
+}
+
+.wire[data-unused] {
+  border-left-style: dashed;
+  border-left-color: var(--line-strong);
+  color: var(--faint);
+}
+
+/* A step */
+
+.step {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
+}
+
+.step[aria-busy="true"] {
+  opacity: 0.6;
+}
+
+.stepHead {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.8rem;
+}
+
+.stepNum {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.stepTitle {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.stepTitle h3 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.stepBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.stepTools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.moveTo select {
+  height: 32px;
+  padding: 0 0.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prompt {
+  max-height: 11.5rem;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  overflow: auto;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.stepForm {
+  display: grid;
+  gap: 1rem;
+}
+
+.fields {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.fields code {
+  padding: 0 0.25rem;
+  border-radius: 4px;
+  background: var(--wire-soft);
+  color: var(--wire);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* Adding a step */
+
+.addRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.addForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.addHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.where {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.where select {
+  height: 34px;
+  padding: 0 0.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.addHint {
+  font-size: 0.86rem;
+  color: var(--faint);
+}
+
+/* Run panel */
+
+.runCol {
+  position: sticky;
+  top: 80px;
+}
+
+.run {
+  display: grid;
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.runLede {
+  margin-top: 0.3rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.picker {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.picker legend {
+  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.optional {
+  font-weight: 500;
+  color: var(--faint);
+}
+
+.pickGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+  max-height: 228px;
+  overflow-y: auto;
+  padding: 3px;
+}
+
+.pick,
+.uploadTile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.pick {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.pick img {
+  object-fit: cover;
+}
+
+.pick:has(input:checked) {
+  outline: 3px solid var(--sun-strong);
+  outline-offset: 1px;
+}
+
+.pick:has(input:focus-visible) {
+  outline: 3px solid var(--wire);
+}
+
+.uploadTile {
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed var(--line-strong);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.uploadTile:hover:not(:disabled) {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.starting summary {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.starting[open] summary {
+  margin-bottom: 0.5rem;
+}
+
+.starting textarea {
+  min-height: 70px;
+}
+
+.progress {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.progress li {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.progressDot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--faint);
+}
+
+.progress li[data-status="running"] .progressDot {
+  border-color: var(--wire);
+  border-top-color: transparent;
+  color: var(--wire);
+  animation: spin 0.9s linear infinite;
+}
+
+.progress li[data-status="succeeded"] .progressDot {
+  border-color: var(--good);
+  background: var(--good);
+  color: var(--surface);
+}
+
+.progress li[data-status="failed"] .progressDot {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--surface);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progressBody {
+  min-width: 0;
+  flex: 1;
+}
+
+.progressName {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.progressState {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+.progressOut {
+  display: -webkit-box;
+  margin-top: 0.2rem;
+  overflow: hidden;
+  font-size: 0.82rem;
+  color: var(--muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.progressErr {
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.result {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: var(--sun-soft);
+}
+
+.resultImage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 9px;
+}
+
+.resultImage img {
+  object-fit: cover;
+}
+
+.captions {
+  display: grid;
+  gap: 0.45rem;
+  padding-left: 1.3rem;
+  font-weight: 600;
+}
+
+.captions li::marker {
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.finalText {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 980px) {
+  .editor {
+    grid-template-columns: 1fr;
+  }
+
+  .runCol {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .pickGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,231 @@
+/* Generated media: the gallery and a single run. */
+
+.grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 1rem;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.item:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--surface-2);
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+.noPhoto {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 0.85rem;
+  color: var(--faint);
+}
+
+/* The top caption, set like a meme caption on the photo. */
+.overlay {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 2.5rem 0.85rem 0.75rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.body {
+  display: grid;
+  gap: 0.6rem;
+  flex: 1;
+  align-content: space-between;
+  padding: 0.8rem 0.9rem 0.9rem;
+}
+
+.more {
+  display: grid;
+  gap: 0.3rem;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.text {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.86rem;
+  color: var(--muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--faint);
+}
+
+/* A single run */
+
+.run {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.75rem;
+}
+
+.runMedia {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: 80px;
+}
+
+.runPhoto {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.runPhoto img {
+  object-fit: cover;
+}
+
+.captionList {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 1rem 1rem 2.2rem;
+  border-radius: var(--radius);
+  background: var(--sun-soft);
+  font-weight: 600;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.88rem;
+}
+
+.facts dt {
+  color: var(--faint);
+}
+
+.facts dd {
+  overflow-wrap: anywhere;
+}
+
+.timeline {
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+  padding: 0;
+}
+
+.tStep {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem 1.1rem;
+}
+
+.tHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+}
+
+.tNum {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.tName {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.tMeta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pre {
+  max-height: 16rem;
+  margin: 0.3rem 0 0;
+  padding: 0.7rem 0.8rem;
+  overflow: auto;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.output {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: var(--surface);
+}
+
+.prompt summary {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .run {
+    grid-template-columns: 1fr;
+  }
+
+  .runMedia {
+    position: static;
+  }
+}
