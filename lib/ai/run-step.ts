@@ -83,7 +83,7 @@ export type StepResult = {
 /** How long one step may spend on model calls in total (the server action gets 120s). */
 const STEP_BUDGET_MS = 90_000;
 /** How long to wait on one model before trying the next one. */
-const ATTEMPT_MS = 25_000;
+const ATTEMPT_MS = 12_000;
 
 function isTimeout(error: unknown) {
   return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
